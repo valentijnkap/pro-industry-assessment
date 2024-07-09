@@ -1,6 +1,12 @@
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+
+const totalVacancies = ref(0);
+</script>
+
 <template>
   <main>
-    <p>Alle vacatures</p>
-    <a href="#">Bekijk alle vacatures</a>
+    <h1>Vacatures</h1>
+    <VacancyTeaser title="HEFTRUCKCHAUFFEUR" description="test" />
   </main>
 </template>
