@@ -17,8 +17,8 @@ const props = defineProps<VacancyTeaserProps>();
     <h3 class="text-3xl font-extrabold">{{ title }}</h3>
     <p class="text-lg">{{ description }}</p>
     <div class="flex justify-end">
-      <a class="bg-primary p-3 text-white text-base" :href="url"
-        >Bekijk vacature</a
+      <NuxtLink class="bg-primary p-3 text-white text-base" :to="url"
+        >Bekijk vacature</NuxtLink
       >
     </div>
   </div>

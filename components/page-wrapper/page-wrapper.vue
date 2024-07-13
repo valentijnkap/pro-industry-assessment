@@ -1,6 +1,6 @@
 <template>
   <div class="container flex gap-6 flex-col md:flex-row mt-10 mb-10">
-    <aside class="w-full md:w-2/6">
+    <aside class="w-full md:w-2/6 md:min-w-96">
       <slot name="sidebar"></slot>
     </aside>
     <main>

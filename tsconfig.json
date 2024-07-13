@@ -15,7 +15,13 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "verbatimModuleSyntax": false,
-    "types": ["vite/client", "vue", "node"]
+    "types": [
+      "vite/client",
+      "vue",
+      "node",
+      "@nuxt/types",
+      "@nuxt/typescript-build"
+    ]
   },
   "include": [
     "**/**/*.ts",
@@ -25,7 +31,10 @@
     "./components/**/*.vue",
     "**/**/*.ts",
     "./components/**/*.ts",
-    "./tests/*.ts"
+    "./tests/*.ts",
+    "env.d.ts",
+    ".nuxt/nuxt.d.ts",
+    "**/*"
   ],
   "exclude": ["node_modules"]
 }
