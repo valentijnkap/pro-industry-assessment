@@ -10,6 +10,8 @@ import {
 
 const SHOW_MAX_FILTERS = 5;
 
+const loading = ref<Boolean>(true);
+
 const vacancies = ref<Vacancy[]>([]);
 const totalVacancies = ref(0);
 const currentPage = ref(1);
@@ -24,12 +26,16 @@ const sectors = ref<SectorFilter[]>([]);
 const sectorsExpanded = ref<Boolean>(false);
 
 const getVacancies = async (pageNumber: number) => {
+  loading.value = true;
+
   try {
     const res = await fetch('/api/vacancies');
     const pageData = await res.json();
 
     vacancies.value = pageData.vacancies;
     totalVacancies.value = pageData.total;
+
+    loading.value = false;
   } catch (error) {
     console.warn(error);
   }
@@ -178,7 +184,10 @@ const handleFilters = (event: Event) => {
         <h1 class="text-3xl">Vacatures</h1>
         <p>{{ totalVacancies }} vacatures gevonden</p>
       </header>
-      <ul class="mt-8 flex flex-col gap-8" v-if="vacancies">
+      <div v-if="loading" class="w-full p-5 justify-center flex">
+        <Spinner />
+      </div>
+      <ul class="mt-8 flex flex-col gap-8" v-if="vacancies && !loading">
         <li v-for="vacancy in vacancies" :key="vacancy.id">
           <VacancyTeaser
             :title="vacancy.website.title"
