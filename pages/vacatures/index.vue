@@ -2,7 +2,11 @@
 import { ref, onMounted } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { Vacancy } from '~/models/vacancy.model';
-import { CategoryFilter } from '~/models/filters.model';
+import {
+  CategoryFilter,
+  EducationFilter,
+  SectorFilter,
+} from '~/models/filters.model';
 
 const SHOW_MAX_FILTERS = 5;
 
@@ -12,6 +16,12 @@ const currentPage = ref(1);
 
 const categories = ref<CategoryFilter[]>([]);
 const categoriesExpanded = ref<Boolean>(false);
+
+const educations = ref<EducationFilter[]>([]);
+const educationsExpanded = ref<Boolean>(false);
+
+const sectors = ref<SectorFilter[]>([]);
+const sectorsExpanded = ref<Boolean>(false);
 
 const getVacancies = async (pageNumber: number) => {
   try {
@@ -36,8 +46,32 @@ const getCategories = async () => {
   }
 };
 
+const getEducations = async () => {
+  try {
+    const res = await fetch('/api/educations');
+    const educationsData = await res.json();
+
+    educations.value = educationsData.response;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+const getSectors = async () => {
+  try {
+    const res = await fetch('/api/sectors');
+    const sectorsData = await res.json();
+
+    sectors.value = sectorsData.response;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
 onMounted(() => getVacancies(currentPage.value));
 onMounted(() => getCategories());
+onMounted(() => getEducations());
+onMounted(() => getSectors());
 
 const toggleCategoriesExpanded = () =>
   (categoriesExpanded.value = !categoriesExpanded.value);
@@ -45,7 +79,25 @@ const toggleCategoriesExpanded = () =>
 const displayedCategories = computed(() => {
   return categoriesExpanded.value
     ? categories.value
-    : categories.value.slice(0, 5);
+    : categories.value.slice(0, SHOW_MAX_FILTERS);
+});
+
+const toggleEducationsExpanded = () =>
+  (educationsExpanded.value = !educationsExpanded.value);
+
+const displayedEducations = computed(() => {
+  return educationsExpanded.value
+    ? educations.value
+    : educations.value.slice(0, SHOW_MAX_FILTERS);
+});
+
+const toggleSectorsExpanded = () =>
+  (sectorsExpanded.value = !sectorsExpanded.value);
+
+const displayedSectors = computed(() => {
+  return sectorsExpanded.value
+    ? sectors.value
+    : sectors.value.slice(0, SHOW_MAX_FILTERS);
 });
 
 const handleFilters = (event: Event) => {
@@ -74,6 +126,47 @@ const handleFilters = (event: Event) => {
               :value="category.key"
               :label="category.key"
               groupName="categories"
+              @update:checked="handleFilters"
+            />
+          </li>
+        </ul>
+      </FilterGroup>
+
+      <FilterGroup
+        title="Opleidingsniveau"
+        :buttonTxt="educationsExpanded ? 'Toon minder' : 'Toon meer'"
+        :showButton="educations.length > SHOW_MAX_FILTERS"
+        @toggle:show="toggleEducationsExpanded"
+      >
+        <ul>
+          <li
+            v-for="education in displayedEducations"
+            :key="education.position"
+          >
+            <Filter
+              :id="`education-${education.position}`"
+              :value="education.key"
+              :label="education.key"
+              groupName="educations"
+              @update:checked="handleFilters"
+            />
+          </li>
+        </ul>
+      </FilterGroup>
+
+      <FilterGroup
+        title="Sectoren"
+        :buttonTxt="sectorsExpanded ? 'Toon minder' : 'Toon meer'"
+        :showButton="sectors.length > SHOW_MAX_FILTERS"
+        @toggle:show="toggleSectorsExpanded"
+      >
+        <ul>
+          <li v-for="sector in displayedSectors" :key="sector.position">
+            <Filter
+              :id="`sector-${sector.position}`"
+              :value="sector.key"
+              :label="sector.key"
+              groupName="sectors"
               @update:checked="handleFilters"
             />
           </li>
