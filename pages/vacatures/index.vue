@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { Vacancy } from '~/models/vacancy.model';
 import { VacancyFilter } from '~/models/filters.model';
+import { Page } from '~/components/pagination/pagination.vue';
+import { POSTS_PER_PAGE } from '~/consts/api-endpoints';
 
 const SHOW_MAX_FILTERS = 5;
 
@@ -21,15 +23,52 @@ const educationsExpanded = ref<Boolean>(false);
 const sectors = ref<VacancyFilter[]>([]);
 const sectorsExpanded = ref<Boolean>(false);
 
+const pagination = ref<Page[]>([])
+
+const handlePrev = () => {
+  currentPage.value--;
+
+  getVacancies(currentPage.value);
+}
+
+const handleNext = () => {
+  currentPage.value++;
+
+  getVacancies(currentPage.value);
+}
+
+const handlePage = (event: number) => {
+  currentPage.value = event;
+
+  getVacancies(currentPage.value);
+}
+
+const setPagination = (total: number) => {
+  const totalPages = Math.ceil(total / POSTS_PER_PAGE);
+  const pages: Page[] = []
+
+  for (let i = 1; i < totalPages; i++) {
+    pages.push({
+      number: i,
+      current: i == currentPage.value
+    })
+  }
+
+  pagination.value = pages
+}
+
 const getVacancies = async (pageNumber: number) => {
   loading.value = true;
 
   try {
-    const res = await fetch('/api/vacancies');
+    const res = await fetch(`/api/vacancies?` + new URLSearchParams({
+      pagenum: `${pageNumber}`
+    }).toString());
     const pageData = await res.json();
 
     vacancies.value = pageData.vacancies;
     totalVacancies.value = pageData.total;
+    setPagination(pageData.total)
 
     loading.value = false;
   } catch (error) {
@@ -192,6 +231,12 @@ const handleFilters = (event: Event) => {
           />
         </li>
       </ul>
+      <Pagination 
+        :pages="pagination" 
+        @update:prev="handlePrev"
+        @update:next="handleNext"
+        @update:page="handlePage"
+      />
     </template>
   </PageWrapper>
 </template>
