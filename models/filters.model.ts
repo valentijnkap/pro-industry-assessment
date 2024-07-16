@@ -1,16 +1,4 @@
-export interface CategoryFilter {
-  key: string;
-  doc_count: number;
-  position: number;
-}
-
-export interface EducationFilter {
-  key: string;
-  doc_count: number;
-  position: number;
-}
-
-export interface SectorFilter {
+export interface VacancyFilter {
   key: string;
   doc_count: number;
   position: number;

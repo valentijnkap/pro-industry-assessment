@@ -2,11 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useQuery } from '@tanstack/vue-query';
 import { Vacancy } from '~/models/vacancy.model';
-import {
-  CategoryFilter,
-  EducationFilter,
-  SectorFilter,
-} from '~/models/filters.model';
+import { VacancyFilter } from '~/models/filters.model';
 
 const SHOW_MAX_FILTERS = 5;
 
@@ -16,13 +12,13 @@ const vacancies = ref<Vacancy[]>([]);
 const totalVacancies = ref(0);
 const currentPage = ref(1);
 
-const categories = ref<CategoryFilter[]>([]);
+const categories = ref<VacancyFilter[]>([]);
 const categoriesExpanded = ref<Boolean>(false);
 
-const educations = ref<EducationFilter[]>([]);
+const educations = ref<VacancyFilter[]>([]);
 const educationsExpanded = ref<Boolean>(false);
 
-const sectors = ref<SectorFilter[]>([]);
+const sectors = ref<VacancyFilter[]>([]);
 const sectorsExpanded = ref<Boolean>(false);
 
 const getVacancies = async (pageNumber: number) => {
