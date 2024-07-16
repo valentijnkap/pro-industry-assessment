@@ -1,75 +1,45 @@
-# Nuxt 3 Minimal Starter
+# Introduction
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A while ago I did an assignment for One shoe in order to pass their test. I needed to create a small app of my choosing. At that time I wanted to learn a Javascript framework and started with Vue. For some reason I fell in love. And with that framework I created a [Chuck Norris Jokes app](https://github.com/valentijnkap/chuck-norris-jokes-app/tree/main?tab=readme-ov-file). Eventually I never got the chance to get some experience with this framework and the projects from One Shoe / IO drove me to learn Angular and React.
 
-## Setup
+I learned a lot from those frameworks. Now NoBears asked me to create a vacancies website where you can filter between vacancies trough different variables in Nuxt. With the knowledge I gained from react and Angular I am goint to try nuxt out. Back to where I started to learn en discover it's capabilities.
 
-Make sure to install the dependencies:
+Within this project I am going to try out some things:
+- Tailwind (Not my preffered way but A friend told me to give this a chance)
+- Vitest for unit testing the components
+- Pinia | State management (not yet started)
+- Storybook | Component library (not yet started)
 
-```bash
-# npm
-npm install
+## Installation
 
-# pnpm
-pnpm install
+By setting up the project and some tryouts I accidently installed peer dependcies. Ofcourse I will clean up the mess but for now run:
 
-# yarn
-yarn install
-
-# bun
-bun install
+```sh
+npm i --legacy-peer-deps
 ```
 
-## Development Server
+## Commands
 
-Start the development server on `http://localhost:3000`:
+Starting the server:
 
-```bash
-# npm
+```sh
 npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Testing the components:
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```sh
+npm run test
 ```
 
-Locally preview production build:
+For improved development experience:
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```sh
+npm run dev:test
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Linter:
+```sh
+npm run lint
+npm run lint:fix
+```
