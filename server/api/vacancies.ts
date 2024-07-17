@@ -24,6 +24,11 @@ export default defineEventHandler(async (event) => {
       total: response.hits.total,
       per_page: POSTS_PER_PAGE,
       vacancies: mappedVacancies,
+      sectors: response.aggregations.sectors.buckets,
+      categories: response.aggregations.categories.buckets,
+      shiftwork: response.aggregations.shiftwork.buckets,
+      provinces: response.aggregations.provinces.buckets,
+      education_level: response.aggregations.education_level.buckets,
     };
   } catch {
     setResponseStatus(event, 500);

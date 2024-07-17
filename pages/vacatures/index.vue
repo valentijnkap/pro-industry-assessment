@@ -70,49 +70,17 @@ const getVacancies = async (pageNumber: number) => {
     totalVacancies.value = pageData.total;
     setPagination(pageData.total)
 
+    categories.value = pageData.categories;
+    educations.value = pageData.education_level;
+    sectors.value = pageData.sectors;
+
     loading.value = false;
   } catch (error) {
     console.warn(error);
   }
 };
 
-const getCategories = async () => {
-  try {
-    const res = await fetch('/api/categories');
-    const categoriesData = await res.json();
-
-    categories.value = categoriesData.response;
-  } catch (error) {
-    console.warn(error);
-  }
-};
-
-const getEducations = async () => {
-  try {
-    const res = await fetch('/api/educations');
-    const educationsData = await res.json();
-
-    educations.value = educationsData.response;
-  } catch (error) {
-    console.warn(error);
-  }
-};
-
-const getSectors = async () => {
-  try {
-    const res = await fetch('/api/sectors');
-    const sectorsData = await res.json();
-
-    sectors.value = sectorsData.response;
-  } catch (error) {
-    console.warn(error);
-  }
-};
-
 onMounted(() => getVacancies(currentPage.value));
-onMounted(() => getCategories());
-onMounted(() => getEducations());
-onMounted(() => getSectors());
 
 const toggleCategoriesExpanded = () =>
   (categoriesExpanded.value = !categoriesExpanded.value);
