@@ -11,6 +11,12 @@ export default defineEventHandler(async (event) => {
     pagenum: reqQueries.pagenum ? reqQueries.pagenum : 1,
   };
 
+  if (reqQueries.q) {
+    Object.assign(queryParams, {
+      q: reqQueries.q
+    })
+  }
+
   try {
     const response: any = await $fetch(PRO_CLUSTER_JOBS, {
       params: queryParams,

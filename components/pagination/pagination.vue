@@ -51,8 +51,8 @@ const handlePage = (event: number) => {
 </script>
 
 <template>
-  <nav class="py-8 flex justify-center">
-    <ul class="flex gap-5 items-baseline">
+  <nav class="sticky bottom-10 flex justify-center mt-8">
+    <ul class="flex gap-5 items-baseline bg-white rounded shadow-2xl p-5">
       <li>
         <button 
           class="py-2 px-3 bg-primary text-white font-medium rounded" 

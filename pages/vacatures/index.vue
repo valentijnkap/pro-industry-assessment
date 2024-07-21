@@ -25,6 +25,8 @@ const sectorsExpanded = ref<Boolean>(false);
 
 const pagination = ref<Page[]>([])
 
+const query = ref<string>()
+
 const handlePrev = () => {
   currentPage.value--;
 
@@ -61,9 +63,15 @@ const getVacancies = async (pageNumber: number) => {
   loading.value = true;
 
   try {
-    const res = await fetch(`/api/vacancies?` + new URLSearchParams({
-      pagenum: `${pageNumber}`
-    }).toString());
+    const params = new URLSearchParams({
+      pagenum: `${pageNumber}`,
+    });
+
+    if (query.value) {
+      params.append('q', query.value)
+    }
+
+    const res = await fetch(`/api/vacancies?${params.toString()}`);
     const pageData = await res.json();
 
     vacancies.value = pageData.vacancies;
@@ -116,12 +124,22 @@ const handleFilters = (event: Event) => {
   // 1. Create a list of filters and pass it to the endpoint.
   // 2. Update the current page url with it's active filters
 };
+
+
+const handleQuery = (event: string) => {
+  query.value = event;
+
+  getVacancies(1)
+}
 </script>
 
 <template>
   <PageWrapper>
     <template v-slot:sidebar>
       <h2 class="text-3xl uppercase font-extrabold">Filters</h2>
+      <div class="my-8">
+        <Search-Field @update:search="handleQuery" />
+      </div>
       <FilterGroup
         title="Categorieën"
         :buttonTxt="categoriesExpanded ? 'Toon minder' : 'Toon meer'"
@@ -199,7 +217,8 @@ const handleFilters = (event: Event) => {
           />
         </li>
       </ul>
-      <Pagination 
+      <Pagination
+        v-if="pagination.length >= 1"
         :pages="pagination" 
         @update:prev="handlePrev"
         @update:next="handleNext"
